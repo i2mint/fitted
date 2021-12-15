@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fitted.model_equivalence &mdash; fitted 0.1.0 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/toggleprompt.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> fitted
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/fitted.html">fitted</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/fitted/model_equivalence.html">fitted.model_equivalence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/fitted/splitting.html">fitted.splitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/fitted/util.html">fitted.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">fitted</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>fitted.model_equivalence</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for fitted.model_equivalence</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions to gauge learner equivalence</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Callable</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">is_regressor</span><span class="p">,</span> <span class="n">is_classifier</span><span class="p">,</span> <span class="n">is_outlier_detector</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span><span class="p">,</span> <span class="n">make_regression</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">TransformerMixin</span>
+
+<span class="kn">from</span> <span class="nn">fitted.util</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Learner</span><span class="p">,</span>
+    <span class="n">Model</span><span class="p">,</span>
+    <span class="n">Estimator</span><span class="p">,</span>
+    <span class="n">XY</span><span class="p">,</span>
+    <span class="n">XYFactory</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="learner_equivalence"><a class="viewcode-back" href="../../module_docs/fitted/model_equivalence.html#fitted.model_equivalence.learner_equivalence">[docs]</a><span class="k">def</span> <span class="nf">learner_equivalence</span><span class="p">(</span>
+    <span class="n">learner_1</span><span class="p">,</span> <span class="n">learner_2</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model_action</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">equivalence_scorer</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns an score that measures how much the two learners are equivalent.</span>
+<span class="sd">    The user can specify what data to use (`xy`) to fit the learners,</span>
+<span class="sd">    what action to take on the fitted model (`model_action`),</span>
+<span class="sd">    and what function to apply to the two results to compute the final score.</span>
+
+<span class="sd">    But the user doesn&#39;t HAVE to specify all that usually (if the learners are</span>
+<span class="sd">    all proper sklearn estimators) -- instead, the function will try to figure</span>
+<span class="sd">    out defaults for any of these if not given.</span>
+
+<span class="sd">    &gt;&gt;&gt; from sklearn.linear_model import LinearRegression as Regressor</span>
+<span class="sd">    &gt;&gt;&gt; from sklearn.linear_model import RidgeClassifier as Classifier</span>
+<span class="sd">    &gt;&gt;&gt; from sklearn.decomposition import PCA as UnsupervisedTransformer</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; from fitted.model_equivalence import learner_equivalence</span>
+<span class="sd">    &gt;&gt;&gt;</span>
+<span class="sd">    &gt;&gt;&gt; for learner in (Regressor, Classifier, UnsupervisedTransformer):</span>
+<span class="sd">    ...     # assert that a learner is equivalent to itself</span>
+<span class="sd">    ...     assert learner_equivalence(learner, learner)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># preprocess inputs</span>
+    <span class="n">learner_1</span> <span class="o">=</span> <span class="n">get_learner</span><span class="p">(</span><span class="n">learner_1</span><span class="p">)</span>
+    <span class="n">learner_2</span> <span class="o">=</span> <span class="n">get_learner</span><span class="p">(</span><span class="n">learner_2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">xy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">xy</span> <span class="o">=</span> <span class="n">get_xy_factory_for_estimator</span><span class="p">(</span><span class="n">learner_1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xy</span><span class="p">,</span> <span class="n">Callable</span><span class="p">):</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">xy</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">xy</span>
+    <span class="n">model_action</span> <span class="o">=</span> <span class="n">model_action</span> <span class="ow">or</span> <span class="n">learner_1</span>
+    <span class="n">model_action</span><span class="p">,</span> <span class="n">dflt_equivalence_scorer</span> <span class="o">=</span> <span class="n">get_model_action_and_equivalence_scorer</span><span class="p">(</span>
+        <span class="n">model_action</span>
+    <span class="p">)</span>
+    <span class="n">equivalence_scorer</span> <span class="o">=</span> <span class="n">equivalence_scorer</span> <span class="ow">or</span> <span class="n">dflt_equivalence_scorer</span>
+    <span class="c1"># do the stuff</span>
+    <span class="n">learner_1</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">learner_2</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">learner_1_output</span> <span class="o">=</span> <span class="n">model_action</span><span class="p">(</span><span class="n">learner_1</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+    <span class="n">learner_2_output</span> <span class="o">=</span> <span class="n">model_action</span><span class="p">(</span><span class="n">learner_2</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">equivalence_scorer</span><span class="p">(</span><span class="n">learner_1_output</span><span class="p">,</span> <span class="n">learner_2_output</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_is_estimator_factory</span><span class="p">(</span><span class="n">estimator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Tells us if the input might be able to be called to get an estimator&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+        <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">Callable</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">BaseEstimator</span><span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="n">valid_estimator_kinds</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;classifier&#39;</span><span class="p">,</span> <span class="s1">&#39;regressor&#39;</span><span class="p">,</span> <span class="s1">&#39;transformer&#39;</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="estimator_kind"><a class="viewcode-back" href="../../module_docs/fitted/model_equivalence.html#fitted.model_equivalence.estimator_kind">[docs]</a><span class="k">def</span> <span class="nf">estimator_kind</span><span class="p">(</span><span class="n">estimator</span><span class="p">:</span> <span class="n">Estimator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Returns the kind (string) of an Estimator&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">_is_estimator_factory</span><span class="p">(</span><span class="n">estimator</span><span class="p">):</span>
+        <span class="n">estimator</span> <span class="o">=</span> <span class="n">estimator</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="n">BaseEstimator</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">is_classifier</span><span class="p">(</span><span class="n">estimator</span><span class="p">):</span>
+            <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;classifier&#39;</span>
+        <span class="k">elif</span> <span class="n">is_regressor</span><span class="p">(</span><span class="n">estimator</span><span class="p">):</span>
+            <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;regressor&#39;</span>
+        <span class="k">elif</span> <span class="n">TransformerMixin</span> <span class="ow">in</span> <span class="nb">type</span><span class="p">(</span><span class="n">estimator</span><span class="p">)</span><span class="o">.</span><span class="n">mro</span><span class="p">():</span>
+            <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;transformer&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">kind</span> <span class="o">=</span> <span class="s1">&#39;regressor&#39;</span>  <span class="c1"># we&#39;ll just use that for unsupervised?</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">kind</span> <span class="o">=</span> <span class="n">estimator</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Couldn&#39;t result estimator to a kind: </span><span class="si">{</span><span class="n">estimator</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">kind</span></div>
+
+
+<span class="k">def</span> <span class="nf">get_xy_factory_for_estimator</span><span class="p">(</span><span class="n">estimator</span><span class="p">:</span> <span class="n">Estimator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">XYFactory</span><span class="p">:</span>
+    <span class="n">kind</span> <span class="o">=</span> <span class="n">estimator_kind</span><span class="p">(</span><span class="n">estimator</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">data_generators</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;classifier&#39;</span><span class="p">:</span> <span class="n">make_classification</span><span class="p">,</span>
+            <span class="s1">&#39;regressor&#39;</span><span class="p">:</span> <span class="n">make_regression</span><span class="p">,</span>
+            <span class="s1">&#39;transformer&#39;</span><span class="p">:</span> <span class="n">make_regression</span><span class="p">,</span>  <span class="c1"># or classification better?</span>
+        <span class="p">}</span>
+        <span class="n">data_gen</span> <span class="o">=</span> <span class="n">data_generators</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">data_gen</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;A string estimator must be one of </span><span class="si">{</span><span class="n">data_generators</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">Callable</span><span class="p">):</span>
+        <span class="n">data_gen</span> <span class="o">=</span> <span class="n">kind</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unrecognized kind of estimator: </span><span class="si">{</span><span class="n">estimator</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data_gen</span>
+
+
+<span class="k">def</span> <span class="nf">get_learner</span><span class="p">(</span><span class="n">learner</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Learner</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">learner</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
+        <span class="c1"># TODO: Do this for any Callable? (Need distinguish with callable instance)</span>
+        <span class="n">learner</span> <span class="o">=</span> <span class="n">learner</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">learner</span>
+
+
+<div class="viewcode-block" id="get_model_action_and_equivalence_scorer"><a class="viewcode-back" href="../../module_docs/fitted/model_equivalence.html#fitted.model_equivalence.get_model_action_and_equivalence_scorer">[docs]</a><span class="k">def</span> <span class="nf">get_model_action_and_equivalence_scorer</span><span class="p">(</span><span class="n">model_action</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a default (model_action, equivalence_scorer) for a given model_action</span>
+<span class="sd">    It will return the model_action as is if not a learner.</span>
+<span class="sd">    If a learner, it will try to figure out a default model_action for it.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_action</span><span class="p">,</span> <span class="n">Learner</span><span class="p">):</span>
+        <span class="n">learner</span> <span class="o">=</span> <span class="n">model_action</span>
+        <span class="n">_estimator_kind</span> <span class="o">=</span> <span class="n">estimator_kind</span><span class="p">(</span><span class="n">learner</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;classifier&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;predict&#39;</span><span class="p">)(</span><span class="n">X</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">,),</span>
+            <span class="s1">&#39;regressor&#39;</span><span class="p">:</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;predict&#39;</span><span class="p">)(</span><span class="n">X</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">),</span>
+            <span class="s1">&#39;transformer&#39;</span><span class="p">:</span> <span class="p">(</span>
+                <span class="k">lambda</span> <span class="n">model</span><span class="p">,</span> <span class="n">X</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="s1">&#39;transform&#39;</span><span class="p">)(</span><span class="n">X</span><span class="p">),</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">}</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">_estimator_kind</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">model_action</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -136,4 +136,3 @@ def get_model_action_and_equivalence_scorer(model_action):
         }.get(_estimator_kind)
     else:
         return model_action, np.allclose
-

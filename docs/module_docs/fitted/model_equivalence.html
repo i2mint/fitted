@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>fitted.model_equivalence &mdash; fitted 0.1.0 documentation</title><link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/toggleprompt.js"></script>
+        <script src="../../_static/clipboard.min.js"></script>
+        <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="fitted.splitting" href="splitting.html" />
+    <link rel="prev" title="fitted" href="../fitted.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> fitted
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../fitted.html">fitted</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">fitted.model_equivalence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="splitting.html">fitted.splitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">fitted.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">fitted</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>fitted.model_equivalence</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/fitted/model_equivalence.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-fitted.model_equivalence">
+<span id="fitted-model-equivalence"></span><h1>fitted.model_equivalence<a class="headerlink" href="#module-fitted.model_equivalence" title="Permalink to this headline">¶</a></h1>
+<p>Functions to gauge learner equivalence</p>
+<dl class="py function">
+<dt id="fitted.model_equivalence.estimator_kind">
+<code class="sig-prename descclassname">fitted.model_equivalence.</code><code class="sig-name descname">estimator_kind</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">estimator</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>Callable<span class="p">, </span>str<span class="p">, </span>type<span class="p">, </span>sklearn.base.BaseEstimator<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../../_modules/fitted/model_equivalence.html#estimator_kind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fitted.model_equivalence.estimator_kind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the kind (string) of an Estimator</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fitted.model_equivalence.get_model_action_and_equivalence_scorer">
+<code class="sig-prename descclassname">fitted.model_equivalence.</code><code class="sig-name descname">get_model_action_and_equivalence_scorer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model_action</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/fitted/model_equivalence.html#get_model_action_and_equivalence_scorer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fitted.model_equivalence.get_model_action_and_equivalence_scorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a default (model_action, equivalence_scorer) for a given model_action
+It will return the model_action as is if not a learner.
+If a learner, it will try to figure out a default model_action for it.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="fitted.model_equivalence.learner_equivalence">
+<code class="sig-prename descclassname">fitted.model_equivalence.</code><code class="sig-name descname">learner_equivalence</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">learner_1</span></em>, <em class="sig-param"><span class="n">learner_2</span></em>, <em class="sig-param"><span class="n">xy</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">model_action</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">equivalence_scorer</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/fitted/model_equivalence.html#learner_equivalence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#fitted.model_equivalence.learner_equivalence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an score that measures how much the two learners are equivalent.
+The user can specify what data to use (<cite>xy</cite>) to fit the learners,
+what action to take on the fitted model (<cite>model_action</cite>),
+and what function to apply to the two results to compute the final score.</p>
+<p>But the user doesn’t HAVE to specify all that usually (if the learners are
+all proper sklearn estimators) – instead, the function will try to figure
+out defaults for any of these if not given.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span> <span class="k">as</span> <span class="n">Regressor</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">RidgeClassifier</span> <span class="k">as</span> <span class="n">Classifier</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span> <span class="k">as</span> <span class="n">UnsupervisedTransformer</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">fitted.model_equivalence</span> <span class="kn">import</span> <span class="n">learner_equivalence</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">learner</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Regressor</span><span class="p">,</span> <span class="n">Classifier</span><span class="p">,</span> <span class="n">UnsupervisedTransformer</span><span class="p">):</span>
+<span class="gp">... </span>    <span class="c1"># assert that a learner is equivalent to itself</span>
+<span class="gp">... </span>    <span class="k">assert</span> <span class="n">learner_equivalence</span><span class="p">(</span><span class="n">learner</span><span class="p">,</span> <span class="n">learner</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../fitted.html" class="btn btn-neutral float-left" title="fitted" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="splitting.html" class="btn btn-neutral float-right" title="fitted.splitting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
