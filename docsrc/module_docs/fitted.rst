@@ -1,4 +1,0 @@
-fitted
-======
-.. automodule:: fitted
-   :members:
