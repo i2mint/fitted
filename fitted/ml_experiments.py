@@ -26,7 +26,7 @@ import numpy as np
 
 ensure_dir = partial(dol.process_path, ensure_dir_exists=True)
 
-PKG_DATA_ROOTDIR = ensure_dir(dol.get_app_data_folder('fitted'))
+PKG_DATA_ROOTDIR = ensure_dir(dol.get_app_config_folder('fitted'))
 pjoin = lambda *paths: os.path.join(*paths)
 
 DFLT_PROJECTS_DIR = ensure_dir(
