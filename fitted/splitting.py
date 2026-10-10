@@ -1,6 +1,7 @@
 """Train/test split tools"""
 
-from typing import Iterable, Callable, Union
+from typing import Union
+from collections.abc import Iterable, Callable
 import numpy as np
 from sklearn.model_selection import GroupShuffleSplit
 from i2.signatures import call_forgivingly
@@ -8,8 +9,8 @@ from i2.signatures import call_forgivingly
 
 def train_test_split_keys(
     keys: Iterable,
-    key_to_tag: Union[Callable, Iterable, None] = None,
-    key_to_group: Union[Callable, Iterable, None] = None,
+    key_to_tag: Callable | Iterable | None = None,
+    key_to_group: Callable | Iterable | None = None,
     test_size=None,
     train_size=None,
     random_state=None,

@@ -2,7 +2,7 @@
 Functions to gauge learner equivalence
 """
 
-from typing import Iterable, Callable
+from collections.abc import Iterable, Callable
 
 import numpy as np
 from sklearn.base import is_regressor, is_classifier, is_outlier_detector

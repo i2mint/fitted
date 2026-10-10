@@ -8,7 +8,8 @@ import os
 import tempfile
 from functools import partial
 from dataclasses import dataclass, asdict
-from typing import Any, Iterable, Mapping, MutableMapping, Iterator
+from typing import Any
+from collections.abc import Iterable, Mapping, MutableMapping, Iterator
 from collections.abc import Mapping as ABCMapping
 from pathlib import Path
 import time
