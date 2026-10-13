@@ -326,24 +326,21 @@ def test_import_does_not_create_folders_in_the_cwd(tmp_path):
     import subprocess
     import sys
 
-    cwd, home = tmp_path / 'cwd', tmp_path / 'home'
+    cwd, home = tmp_path / "cwd", tmp_path / "home"
     cwd.mkdir(), home.mkdir()
-    code = (
-        "import fitted.ml_experiments as m, os; "
-        "print(m.DFLT_PROJECTS_DIR)"
-    )
+    code = "import fitted.ml_experiments as m, os; " "print(m.DFLT_PROJECTS_DIR)"
     env = {
         k: v
         for k, v in os.environ.items()
-        if k not in ('FITTED_DFLT_EXP_PROJECTS_DIR', 'XDG_CONFIG_HOME')
+        if k not in ("FITTED_DFLT_EXP_PROJECTS_DIR", "XDG_CONFIG_HOME")
     }
-    env['HOME'] = str(home)  # (so the app folder is a temporary one)
+    env["HOME"] = str(home)  # (so the app folder is a temporary one)
     # (the package may be run from source, not installed)
     import fitted
 
-    env['PYTHONPATH'] = str(Path(fitted.__file__).parent.parent)
+    env["PYTHONPATH"] = str(Path(fitted.__file__).parent.parent)
     out = subprocess.run(
-        [sys.executable, '-c', code], cwd=cwd, capture_output=True, text=True, env=env
+        [sys.executable, "-c", code], cwd=cwd, capture_output=True, text=True, env=env
     )
     assert out.stdout.strip().startswith(str(home)), out.stderr
     assert list(cwd.iterdir()) == []
