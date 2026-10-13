@@ -1,0 +1,23 @@
+# fitted
+
+> Machine learning tools
+
+
+## Pages
+
+- [fitted](index.html.md): Machine learning tools
+- [API reference](api.html.md): | &#96;fitted&#96;   | Machine learning tools   |
+- [fitted](_autosummary/fitted.html.md): Machine learning tools
+- [fitted.ml_experiments](_autosummary/fitted.ml_experiments.html.md): Lightweight experiment runner for ML model evaluation.
+- [fitted.model_equivalence](_autosummary/fitted.model_equivalence.html.md): Functions to gauge learner equivalence
+- [fitted.splitting](_autosummary/fitted.splitting.html.md): Train/test split tools
+- [fitted.util](_autosummary/fitted.util.html.md): Internal utils
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-13 12:34 UTC&#42;&#42; from commit &lt;a href="https://github.com/i2m...
+
+## Optional
+
+- [fitted.md](fitted.md): Complete documentation in a single file.
+
+## Build
+
+- [build_info.json](build_info.json): build provenance (commit, version, tool versions, whether the docs match the package)

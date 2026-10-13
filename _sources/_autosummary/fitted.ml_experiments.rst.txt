@@ -1,0 +1,25 @@
+fitted.ml\_experiments
+======================
+
+.. automodule:: fitted.ml_experiments
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      cleanup_temp_dir
+      create_temp_projects_dir
+      load_experiment_results
+      pjoin
+      summarize_results
+      temp_uri_to_project_store
+      uri_to_project_store
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      ExperimentConfig
+      ExperimentRunner
+   

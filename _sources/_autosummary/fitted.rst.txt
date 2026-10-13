@@ -1,0 +1,16 @@
+﻿fitted
+======
+
+.. automodule:: fitted
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   ml_experiments
+   model_equivalence
+   splitting
+   util

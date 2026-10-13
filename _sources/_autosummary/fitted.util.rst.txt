@@ -1,0 +1,6 @@
+fitted.util
+===========
+
+.. automodule:: fitted.util
+
+   

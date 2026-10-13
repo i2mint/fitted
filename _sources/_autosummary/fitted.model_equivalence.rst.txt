@@ -1,0 +1,16 @@
+fitted.model\_equivalence
+=========================
+
+.. automodule:: fitted.model_equivalence
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      estimator_kind
+      get_learner
+      get_model_action_and_equivalence_scorer
+      get_xy_factory_for_estimator
+      learner_equivalence
+   

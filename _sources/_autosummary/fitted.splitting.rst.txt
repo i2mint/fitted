@@ -1,0 +1,13 @@
+fitted.splitting
+================
+
+.. automodule:: fitted.splitting
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      keys_aligned_list
+      train_test_split_keys
+   

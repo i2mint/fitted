@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "built_at": "2026-10-13T12:34:13Z",
+  "package": {
+    "name": "fitted",
+    "version": "0.1.4",
+    "display_name": "fitted",
+    "source": "setup.cfg"
+  },
+  "git": {
+    "available": true,
+    "commit": "416040bab2e57779b5e185a165ee8559a4170f4a",
+    "short_commit": "416040b",
+    "branch": "master",
+    "tags": [
+      "0.1.4"
+    ],
+    "dirty": false,
+    "remote_url": "https://github.com/i2mint/fitted",
+    "commit_url": "https://github.com/i2mint/fitted/commit/416040bab2e57779b5e185a165ee8559a4170f4a",
+    "error": null
+  },
+  "ci": {
+    "provider": "github",
+    "repository": "i2mint/fitted",
+    "sha": "dd194b937187e2c339016d56c6c63ad9e46411aa",
+    "sha_in_history": true,
+    "ref": "refs/heads/master",
+    "ref_name": "master",
+    "run_id": "38398041112",
+    "run_url": "https://github.com/i2mint/fitted/actions/runs/38398041112",
+    "server_url": "https://github.com"
+  },
+  "tools": {
+    "epythet": "0.2.15",
+    "sphinx": "9.1.0",
+    "docutils": "0.22.4",
+    "python": "3.12.15"
+  },
+  "config": {
+    "theme": "auto",
+    "html_theme": "sphinxawesome_theme",
+    "accent": "#933334",
+    "mode": "auto",
+    "api_generator": "autosummary",
+    "ignore": [
+      "tests/",
+      "scrap/"
+    ],
+    "agent_outputs": true,
+    "aggregates": [
+      "md"
+    ],
+    "ai_artifacts": true,
+    "provenance": true,
+    "docs_dir": "docsrc"
+  },
+  "site": {
+    "modules_documented": 5,
+    "objects_documented": 15
+  },
+  "pypi": {
+    "checked": true,
+    "latest": "0.1.4",
+    "relation": "same",
+    "error": null
+  },
+  "reproduce": "git clone https://github.com/i2mint/fitted && cd fitted\ngit checkout 416040bab2e57779b5e185a165ee8559a4170f4a\npip install \"epythet==0.2.15\"\nepythet quickstart . --ignore tests/ scrap/",
+  "warnings": [],
+  "alignment": {
+    "aligned": true,
+    "notes": []
+  }
+}

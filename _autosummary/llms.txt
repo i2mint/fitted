@@ -1,0 +1,16 @@
+# fitted
+
+> Machine learning tools
+
+
+## Pages in this subsection
+
+- [fitted](fitted.html.md): Machine learning tools
+- [fitted.ml_experiments](fitted.ml_experiments.html.md): Lightweight experiment runner for ML model evaluation.
+- [fitted.model_equivalence](fitted.model_equivalence.html.md): Functions to gauge learner equivalence
+- [fitted.splitting](fitted.splitting.html.md): Train/test split tools
+- [fitted.util](fitted.util.html.md): Internal utils
+
+## Optional
+
+- [Top-level llms.txt](../llms.txt): Complete documentation index.
