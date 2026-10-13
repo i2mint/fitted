@@ -5,7 +5,7 @@ orphan: true
 
 # About this build
 
-This documentation was built on **2026-10-13 12:34 UTC** from commit <a href="https://github.com/i2mint/fitted/commit/416040bab2e57779b5e185a165ee8559a4170f4a"><code>416040b</code></a> on branch <code>master</code>, for **fitted 0.1.4** (from <code>setup.cfg</code>).
+This documentation was built on **2026-10-13 14:17 UTC** from commit <a href="https://github.com/i2mint/fitted/commit/1846f577f56134981f847846dfafb01f920e2a91"><code>1846f57</code></a> on branch <code>master</code>, for **fitted 0.1.5** (from <code>setup.cfg</code>).
 
 :::{note}
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -15,9 +15,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 | | |
 |---|---|
-| Commit | <a href="https://github.com/i2mint/fitted/commit/416040bab2e57779b5e185a165ee8559a4170f4a"><code>416040bab2e57779b5e185a165ee8559a4170f4a</code></a> |
+| Commit | <a href="https://github.com/i2mint/fitted/commit/1846f577f56134981f847846dfafb01f920e2a91"><code>1846f577f56134981f847846dfafb01f920e2a91</code></a> |
 | Branch | <code>master</code> |
-| Tags at this commit | <code>0.1.4</code> |
+| Tags at this commit | <code>0.1.5</code> |
 | Working tree | clean |
 | Remote | <code>https://github.com/i2mint/fitted</code> |
 
@@ -26,9 +26,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 | | |
 |---|---|
 | Repository | <code>i2mint/fitted</code> |
-| Run | <a href="https://github.com/i2mint/fitted/actions/runs/38398041112">38398041112</a> |
+| Run | <a href="https://github.com/i2mint/fitted/actions/runs/38411822678">38411822678</a> |
 | Ref | <code>refs/heads/master</code> |
-| Event commit | <code>dd194b937187e2c339016d56c6c63ad9e46411aa</code> (in the history of the built commit) |
+| Event commit | <code>85d0c138917e6ceb6ca065405a6ed4e171041103</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -53,13 +53,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/fitted/0.1.4/">0.1.4</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/fitted/0.1.5/">0.1.5</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/fitted && cd fitted
-git checkout 416040bab2e57779b5e185a165ee8559a4170f4a
+git checkout 1846f577f56134981f847846dfafb01f920e2a91
 pip install "epythet==0.2.15"
 epythet quickstart . --ignore tests/ scrap/
 ```

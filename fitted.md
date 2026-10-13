@@ -1,4 +1,4 @@
-> built 2026-10-13 12:34 UTC from 416040b (master) · fitted 0.1.4. Details: build_info.json
+> built 2026-10-13 14:17 UTC from 1846f57 (master) · fitted 0.1.5. Details: build_info.json
 
 # index.html.md
 
@@ -74,11 +74,11 @@ runner = ExperimentRunner(
 To see what your default `projects` directory is, see
 
 ```py
-from fitted.ml_experiements import DFLT_PROJECTS_DIR
+from fitted.ml_experiments import DFLT_PROJECTS_DIR
 print(DFLT_PROJECTS_DIR)
 ```
 
-You can change this default by specifying a different one in the `FITTED_DFLT_EXP_PROJECTS_DIR` environment variable.
+It lives in fitted’s app folder (not in the current directory). You can change this default by specifying a different one in the `FITTED_DFLT_EXP_PROJECTS_DIR` environment variable (use an absolute path; a relative one is resolved against the current directory).
 
 ### ExperimentConfig
 
@@ -357,7 +357,7 @@ Configuration for experiment runs.
 3
 ```
 
-### *class* fitted.ml_experiments.ExperimentRunner(, project_store=None, config=None, project_dir='/home/runner/work/fitted/fitted/docsrc/ml_experiments/projects')
+### *class* fitted.ml_experiments.ExperimentRunner(, project_store=None, config=None, project_dir='/home/runner/.config/fitted/ml_experiments/projects')
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -470,7 +470,7 @@ temp directory creation with project store setup.
 * **Returns:**
   MutableMapping project store in temporary location
 
-### fitted.ml_experiments.uri_to_project_store(name, , projects_dir='/home/runner/work/fitted/fitted/docsrc/ml_experiments/projects')
+### fitted.ml_experiments.uri_to_project_store(name, , projects_dir='/home/runner/.config/fitted/ml_experiments/projects')
 
 Convert a project name to a MutableMapping store.
 
@@ -631,7 +631,7 @@ Internal utils
 
 # About this build
 
-This documentation was built on **2026-10-13 12:34 UTC** from commit <a href="https://github.com/i2mint/fitted/commit/416040bab2e57779b5e185a165ee8559a4170f4a"><code>416040b</code></a> on branch <code>master</code>, for **fitted 0.1.4** (from <code>setup.cfg</code>).
+This documentation was built on **2026-10-13 14:17 UTC** from commit <a href="https://github.com/i2mint/fitted/commit/1846f577f56134981f847846dfafb01f920e2a91"><code>1846f57</code></a> on branch <code>master</code>, for **fitted 0.1.5** (from <code>setup.cfg</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -640,9 +640,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                      |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/fitted/commit/416040bab2e57779b5e185a165ee8559a4170f4a"><code>416040bab2e57779b5e185a165ee8559a4170f4a</code></a> |
+| Commit              | <a href="https://github.com/i2mint/fitted/commit/1846f577f56134981f847846dfafb01f920e2a91"><code>1846f577f56134981f847846dfafb01f920e2a91</code></a> |
 | Branch              | <code>master</code>                                                                                                                                  |
-| Tags at this commit | <code>0.1.4</code>                                                                                                                                   |
+| Tags at this commit | <code>0.1.5</code>                                                                                                                                   |
 | Working tree        | clean                                                                                                                                                |
 | Remote              | <code>https://github.com/i2mint/fitted</code>                                                                                                        |
 
@@ -651,9 +651,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/fitted</code>                                                                 |
-| Run          | <a href="https://github.com/i2mint/fitted/actions/runs/38398041112">38398041112</a>        |
+| Run          | <a href="https://github.com/i2mint/fitted/actions/runs/38411822678">38411822678</a>        |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>dd194b937187e2c339016d56c6c63ad9e46411aa</code> (in the history of the built commit) |
+| Event commit | <code>85d0c138917e6ceb6ca065405a6ed4e171041103</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -678,13 +678,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/fitted/0.1.4/">0.1.4</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/fitted/0.1.5/">0.1.5</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/fitted && cd fitted
-git checkout 416040bab2e57779b5e185a165ee8559a4170f4a
+git checkout 1846f577f56134981f847846dfafb01f920e2a91
 pip install "epythet==0.2.15"
 epythet quickstart . --ignore tests/ scrap/
 ```

@@ -34,7 +34,7 @@ Configuration for experiment runs.
 3
 ```
 
-### *class* fitted.ml_experiments.ExperimentRunner(, project_store=None, config=None, project_dir='/home/runner/work/fitted/fitted/docsrc/ml_experiments/projects')
+### *class* fitted.ml_experiments.ExperimentRunner(, project_store=None, config=None, project_dir='/home/runner/.config/fitted/ml_experiments/projects')
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -147,7 +147,7 @@ temp directory creation with project store setup.
 * **Returns:**
   MutableMapping project store in temporary location
 
-### fitted.ml_experiments.uri_to_project_store(name, , projects_dir='/home/runner/work/fitted/fitted/docsrc/ml_experiments/projects')
+### fitted.ml_experiments.uri_to_project_store(name, , projects_dir='/home/runner/.config/fitted/ml_experiments/projects')
 
 Convert a project name to a MutableMapping store.
 
