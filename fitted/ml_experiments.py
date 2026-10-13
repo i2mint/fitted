@@ -16,6 +16,7 @@ from datetime import datetime
 
 import dol
 import dill
+from config2py import get_app_folder
 from sklearn.model_selection import cross_validate, train_test_split
 import numpy as np
 
@@ -26,7 +27,7 @@ import numpy as np
 
 ensure_dir = partial(dol.process_path, ensure_dir_exists=True)
 
-PKG_DATA_ROOTDIR = ensure_dir(dol.get_app_config_folder('fitted'))
+PKG_DATA_ROOTDIR = ensure_dir(get_app_folder('fitted', folder_kind='config'))
 pjoin = lambda *paths: os.path.join(*paths)
 
 DFLT_PROJECTS_DIR = ensure_dir(
