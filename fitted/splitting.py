@@ -105,5 +105,5 @@ def keys_aligned_list(iterable_spec, keys):
         return iterable_spec
     else:
         raise TypeError(
-            f'Unknown iterable_spec type ({type(iterable_spec)}): {iterable_spec}'
+            f"Unknown iterable_spec type ({type(iterable_spec)}): {iterable_spec}"
         )

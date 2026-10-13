@@ -20,18 +20,17 @@ from config2py import get_app_folder
 from sklearn.model_selection import cross_validate, train_test_split
 import numpy as np
 
-
 # --------------------------------------------------------------------------------------
 # Default configuration
 # --------------------------------------------------------------------------------------
 
 ensure_dir = partial(dol.process_path, ensure_dir_exists=True)
 
-PKG_DATA_ROOTDIR = ensure_dir(get_app_folder('fitted', folder_kind='config'))
+PKG_DATA_ROOTDIR = ensure_dir(get_app_folder("fitted", folder_kind="config"))
 pjoin = lambda *paths: os.path.join(*paths)
 
 DFLT_PROJECTS_DIR = ensure_dir(
-    os.getenv('FITTED_DFLT_EXP_PROJECTS_DIR') or pjoin('ml_experiments', 'projects')
+    os.getenv("FITTED_DFLT_EXP_PROJECTS_DIR") or pjoin("ml_experiments", "projects")
 )
 
 dill_wrap = dol.Pipe(
@@ -74,7 +73,7 @@ class ExperimentConfig:
     n_splits: int = 5
     test_size: float = 0.2
     random_state: int | None = None
-    scoring: str | list[str] = 'accuracy'
+    scoring: str | list[str] = "accuracy"
     verbose: bool = True
     n_jobs: int = -1
 
@@ -148,32 +147,32 @@ def _run_single_experiment(
     def _compute_stats(scores: np.ndarray) -> dict[str, float]:
         """Compute mean, std, min, max for scores."""
         return {
-            'mean': float(np.mean(scores)),
-            'std': float(np.std(scores)),
-            'min': float(np.min(scores)),
-            'max': float(np.max(scores)),
+            "mean": float(np.mean(scores)),
+            "std": float(np.std(scores)),
+            "min": float(np.min(scores)),
+            "max": float(np.max(scores)),
         }
 
     results = {
-        'config': asdict(config),
-        'timestamp': datetime.now().isoformat(),
-        'duration_seconds': time.time() - start_time,
-        'n_samples': len(X) if hasattr(X, '__len__') else None,
-        'n_features': X.shape[1] if hasattr(X, 'shape') and len(X.shape) > 1 else None,
+        "config": asdict(config),
+        "timestamp": datetime.now().isoformat(),
+        "duration_seconds": time.time() - start_time,
+        "n_samples": len(X) if hasattr(X, "__len__") else None,
+        "n_features": X.shape[1] if hasattr(X, "shape") and len(X.shape) > 1 else None,
     }
 
     # Add statistics for each scoring metric
     for metric in scoring:
-        test_key = f'test_{metric}'
-        train_key = f'train_{metric}'
+        test_key = f"test_{metric}"
+        train_key = f"train_{metric}"
 
         if test_key in cv_results:
-            results[f'{metric}_test'] = _compute_stats(cv_results[test_key])
+            results[f"{metric}_test"] = _compute_stats(cv_results[test_key])
         if train_key in cv_results:
-            results[f'{metric}_train'] = _compute_stats(cv_results[train_key])
+            results[f"{metric}_train"] = _compute_stats(cv_results[train_key])
 
     # Store raw CV results for potential further analysis
-    results['cv_results_raw'] = {
+    results["cv_results_raw"] = {
         k: v.tolist() if isinstance(v, np.ndarray) else v for k, v in cv_results.items()
     }
 
@@ -214,7 +213,7 @@ class ExperimentRunner:
         self._project_store = self._init_project_store(project_store)
 
         if self.config.verbose:
-            store_location = getattr(self._project_store, 'rootdir', 'in-memory')
+            store_location = getattr(self._project_store, "rootdir", "in-memory")
             print(
                 f"Experiment runner initialized. Results will be stored in: {store_location}"
             )
@@ -225,7 +224,7 @@ class ExperimentRunner:
         """Initialize the project store from various input types."""
         if project_store is None:
             # Create temporary directory
-            temp_dir = tempfile.mkdtemp(prefix='ml_experiments_')
+            temp_dir = tempfile.mkdtemp(prefix="ml_experiments_")
             if self.config.verbose:
                 print(
                     f"No project store specified. Using temporary directory: {temp_dir}"
@@ -299,7 +298,7 @@ class ExperimentRunner:
                         if isinstance(run_config.scoring, list)
                         else run_config.scoring
                     )
-                    test_stats = result.get(f'{primary_metric}_test', {})
+                    test_stats = result.get(f"{primary_metric}_test", {})
                     if test_stats:
                         print(
                             f"  → {primary_metric}: "
@@ -308,7 +307,7 @@ class ExperimentRunner:
 
         if run_config.verbose:
             print(f"\n✓ All experiments complete. Results stored in project store.")
-            store_location = getattr(self._project_store, 'rootdir', 'in-memory')
+            store_location = getattr(self._project_store, "rootdir", "in-memory")
             print(f"  Location: {store_location}")
 
         return self._project_store
@@ -336,8 +335,8 @@ def load_experiment_results(
 def summarize_results(
     results: MutableMapping,
     *,
-    metric: str = 'accuracy',
-    sort_by: str = 'mean',
+    metric: str = "accuracy",
+    sort_by: str = "mean",
 ) -> Iterable[tuple[str, dict]]:
     """Generate summary statistics sorted by performance.
 
@@ -350,7 +349,7 @@ def summarize_results(
 
     for key in results:
         result = results[key]
-        test_stats = result.get(f'{metric}_test', {})
+        test_stats = result.get(f"{metric}_test", {})
         if test_stats:
             summaries.append((key, test_stats))
 
@@ -360,7 +359,7 @@ def summarize_results(
     yield from summaries
 
 
-def create_temp_projects_dir(prefix: str = 'ml_experiments_') -> str:
+def create_temp_projects_dir(prefix: str = "ml_experiments_") -> str:
     """Create a persistent temporary directory for examples/tests.
 
     This creates a temporary directory that persists beyond the function call,

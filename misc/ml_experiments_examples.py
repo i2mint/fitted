@@ -17,7 +17,6 @@ from fitted.ml_experiments import (
     temp_uri_to_project_store,
 )
 
-
 # --------------------------------------------------------------------------------------
 # Example 1: Minimal usage with defaults
 # --------------------------------------------------------------------------------------
@@ -38,16 +37,16 @@ def example_minimal():
 
     # Run experiments
     results = runner.run(
-        datasets={'iris': (X, y)},
+        datasets={"iris": (X, y)},
         models={
-            'rf': RandomForestClassifier(random_state=42),
-            'svm': SVC(random_state=42),
+            "rf": RandomForestClassifier(random_state=42),
+            "svm": SVC(random_state=42),
         },
     )
 
     # Access results
     print("\nResults for RandomForest:")
-    print(results['iris/rf']['accuracy_test'])
+    print(results["iris/rf"]["accuracy_test"])
 
 
 # --------------------------------------------------------------------------------------
@@ -67,26 +66,26 @@ def example_multiple_datasets():
     cancer = load_breast_cancer()
 
     datasets = {
-        'iris': (iris.data, iris.target),
-        'wine': (wine.data, wine.target),
-        'cancer': (cancer.data, cancer.target),
+        "iris": (iris.data, iris.target),
+        "wine": (wine.data, wine.target),
+        "cancer": (cancer.data, cancer.target),
     }
 
     # Define models
     models = {
-        'rf': RandomForestClassifier(random_state=42),
-        'gb': GradientBoostingClassifier(random_state=42),
-        'lr': LogisticRegression(random_state=42, max_iter=1000),
+        "rf": RandomForestClassifier(random_state=42),
+        "gb": GradientBoostingClassifier(random_state=42),
+        "lr": LogisticRegression(random_state=42, max_iter=1000),
     }
 
     # Create temporary project store
-    temp_dir = create_temp_projects_dir('example_multi_datasets_')
+    temp_dir = create_temp_projects_dir("example_multi_datasets_")
 
     try:
         # Run experiments with custom config
         runner = ExperimentRunner(
             project_store=temp_uri_to_project_store(
-                'multi_dataset_comparison', temp_projects_dir=temp_dir
+                "multi_dataset_comparison", temp_projects_dir=temp_dir
             ),
             config=ExperimentConfig(n_splits=10, verbose=True),
         )
@@ -99,7 +98,7 @@ def example_multiple_datasets():
         print("-" * 70)
 
         for key, stats in summarize_results(results):
-            dataset, model = key.split('/')
+            dataset, model = key.split("/")
             print(f"{dataset:15} {model:10} {stats['mean']:.4f} ± {stats['std']:.4f}")
 
     finally:
@@ -121,26 +120,26 @@ def example_multiple_metrics():
     X, y = cancer.data, cancer.target
 
     # Create temporary project store
-    temp_dir = create_temp_projects_dir('example_multi_metrics_')
+    temp_dir = create_temp_projects_dir("example_multi_metrics_")
 
     try:
         runner = ExperimentRunner(
             project_store=temp_uri_to_project_store(
-                'multi_metric_eval', temp_projects_dir=temp_dir
+                "multi_metric_eval", temp_projects_dir=temp_dir
             ),
             config=ExperimentConfig(
                 n_splits=5,
-                scoring=['accuracy', 'precision', 'recall', 'f1', 'roc_auc'],
+                scoring=["accuracy", "precision", "recall", "f1", "roc_auc"],
                 verbose=True,
             ),
         )
 
         results = runner.run(
-            datasets={'cancer': (X, y)},
+            datasets={"cancer": (X, y)},
             models={
-                'rf': RandomForestClassifier(random_state=42),
-                'svm': SVC(random_state=42),
-                'lr': LogisticRegression(random_state=42, max_iter=1000),
+                "rf": RandomForestClassifier(random_state=42),
+                "svm": SVC(random_state=42),
+                "lr": LogisticRegression(random_state=42, max_iter=1000),
             },
         )
 
@@ -149,9 +148,9 @@ def example_multiple_metrics():
         print("All metrics for RandomForest on cancer dataset:")
         print("-" * 70)
 
-        rf_result = results['cancer/rf']
-        for metric in ['accuracy', 'precision', 'recall', 'f1', 'roc_auc']:
-            stats = rf_result[f'{metric}_test']
+        rf_result = results["cancer/rf"]
+        for metric in ["accuracy", "precision", "recall", "f1", "roc_auc"]:
+            stats = rf_result[f"{metric}_test"]
             print(f"{metric:15} {stats['mean']:.4f} ± {stats['std']:.4f}")
 
     finally:
@@ -174,14 +173,14 @@ def example_iterable_inputs():
 
     # Define as list of tuples
     datasets = [
-        ('iris', (iris.data, iris.target)),
-        ('wine', (wine.data, wine.target)),
+        ("iris", (iris.data, iris.target)),
+        ("wine", (wine.data, wine.target)),
     ]
 
     models = [
-        ('rf_10', RandomForestClassifier(n_estimators=10, random_state=42)),
-        ('rf_50', RandomForestClassifier(n_estimators=50, random_state=42)),
-        ('rf_100', RandomForestClassifier(n_estimators=100, random_state=42)),
+        ("rf_10", RandomForestClassifier(n_estimators=10, random_state=42)),
+        ("rf_50", RandomForestClassifier(n_estimators=50, random_state=42)),
+        ("rf_100", RandomForestClassifier(n_estimators=100, random_state=42)),
     ]
 
     runner = ExperimentRunner(config=ExperimentConfig(n_splits=3, verbose=True))
@@ -194,8 +193,8 @@ def example_iterable_inputs():
     print("-" * 70)
 
     for n_est in [10, 50, 100]:
-        key = f'iris/rf_{n_est}'
-        stats = results[key]['accuracy_test']
+        key = f"iris/rf_{n_est}"
+        stats = results[key]["accuracy_test"]
         print(f"n_estimators={n_est:3d}: {stats['mean']:.4f} ± {stats['std']:.4f}")
 
 
@@ -214,30 +213,30 @@ def example_config_overrides():
     X, y = iris.data, iris.target
 
     # Create temporary project store
-    temp_dir = create_temp_projects_dir('example_config_overrides_')
+    temp_dir = create_temp_projects_dir("example_config_overrides_")
 
     try:
         # Create runner with default config
         runner = ExperimentRunner(
             project_store=temp_uri_to_project_store(
-                'config_override_demo', temp_projects_dir=temp_dir
+                "config_override_demo", temp_projects_dir=temp_dir
             ),
             config=ExperimentConfig(n_splits=5, verbose=False),
         )
 
         models = {
-            'rf': RandomForestClassifier(random_state=42),
-            'svm': SVC(random_state=42),
+            "rf": RandomForestClassifier(random_state=42),
+            "svm": SVC(random_state=42),
         }
 
         # First run: use default 5 splits, verbose=False
         print("\nRun 1: Using default config (5 splits, verbose=False)")
-        results1 = runner.run(datasets={'iris': (X, y)}, models=models)
+        results1 = runner.run(datasets={"iris": (X, y)}, models=models)
 
         # Second run: override to 10 splits and verbose=True
         print("\nRun 2: Overriding to 10 splits and verbose=True")
         results2 = runner.run(
-            datasets={'iris': (X, y)}, models=models, n_splits=10, verbose=True
+            datasets={"iris": (X, y)}, models=models, n_splits=10, verbose=True
         )
 
     finally:
@@ -259,30 +258,30 @@ def example_persistence():
     X, y = iris.data, iris.target
 
     # Create temporary project store
-    temp_dir = create_temp_projects_dir('example_persistence_')
+    temp_dir = create_temp_projects_dir("example_persistence_")
 
     try:
         # Run experiments and save
         print(f"\nRunning experiments and saving to temporary location...")
         runner = ExperimentRunner(
             project_store=temp_uri_to_project_store(
-                'my_experiments', temp_projects_dir=temp_dir
+                "my_experiments", temp_projects_dir=temp_dir
             ),
             config=ExperimentConfig(n_splits=5, verbose=False),
         )
 
         runner.run(
-            datasets={'iris': (X, y)},
+            datasets={"iris": (X, y)},
             models={
-                'rf': RandomForestClassifier(random_state=42),
-                'svm': SVC(random_state=42),
+                "rf": RandomForestClassifier(random_state=42),
+                "svm": SVC(random_state=42),
             },
         )
 
         # Later: reload results
         print("\nReloading results from the same temporary location...")
         results = temp_uri_to_project_store(
-            'my_experiments', temp_projects_dir=temp_dir
+            "my_experiments", temp_projects_dir=temp_dir
         )
 
         print(f"\nFound {len(list(results))} experiments:")
@@ -315,47 +314,47 @@ def example_ai_friendly():
 
     # AI determines this is a classification problem with moderate size
     suggested_models = [
-        'RandomForestClassifier',
-        'GradientBoostingClassifier',
-        'SVC',
-        'LogisticRegression',
-        'DecisionTreeClassifier',
-        'GaussianNB',
+        "RandomForestClassifier",
+        "GradientBoostingClassifier",
+        "SVC",
+        "LogisticRegression",
+        "DecisionTreeClassifier",
+        "GaussianNB",
     ]
 
     # AI constructs model instances programmatically
     models = {}
     for model_name in suggested_models:
-        if model_name == 'RandomForestClassifier':
-            models['rf'] = RandomForestClassifier(random_state=42)
-        elif model_name == 'GradientBoostingClassifier':
-            models['gb'] = GradientBoostingClassifier(random_state=42)
-        elif model_name == 'SVC':
-            models['svm'] = SVC(random_state=42)
-        elif model_name == 'LogisticRegression':
-            models['lr'] = LogisticRegression(random_state=42, max_iter=1000)
-        elif model_name == 'DecisionTreeClassifier':
-            models['dt'] = DecisionTreeClassifier(random_state=42)
-        elif model_name == 'GaussianNB':
-            models['nb'] = GaussianNB()
+        if model_name == "RandomForestClassifier":
+            models["rf"] = RandomForestClassifier(random_state=42)
+        elif model_name == "GradientBoostingClassifier":
+            models["gb"] = GradientBoostingClassifier(random_state=42)
+        elif model_name == "SVC":
+            models["svm"] = SVC(random_state=42)
+        elif model_name == "LogisticRegression":
+            models["lr"] = LogisticRegression(random_state=42, max_iter=1000)
+        elif model_name == "DecisionTreeClassifier":
+            models["dt"] = DecisionTreeClassifier(random_state=42)
+        elif model_name == "GaussianNB":
+            models["nb"] = GaussianNB()
 
     # AI creates datasets dict
     datasets = {
-        'iris': (iris.data, iris.target),
-        'wine': (wine.data, wine.target),
+        "iris": (iris.data, iris.target),
+        "wine": (wine.data, wine.target),
     }
 
     # Create temporary project store
-    temp_dir = create_temp_projects_dir('example_ai_friendly_')
+    temp_dir = create_temp_projects_dir("example_ai_friendly_")
 
     try:
         # AI runs experiments
         runner = ExperimentRunner(
             project_store=temp_uri_to_project_store(
-                'ai_generated_experiments', temp_projects_dir=temp_dir
+                "ai_generated_experiments", temp_projects_dir=temp_dir
             ),
             config=ExperimentConfig(
-                n_splits=5, scoring=['accuracy', 'f1_macro'], verbose=True
+                n_splits=5, scoring=["accuracy", "f1_macro"], verbose=True
             ),
         )
 
@@ -372,7 +371,7 @@ def example_ai_friendly():
 
             # Get results for this dataset
             dataset_results = {
-                k.split('/')[1]: results[k]
+                k.split("/")[1]: results[k]
                 for k in results
                 if k.startswith(f"{dataset_name}/")
             }
@@ -382,7 +381,7 @@ def example_ai_friendly():
             best_accuracy = 0
 
             for model_name, result in dataset_results.items():
-                accuracy = result['accuracy_test']['mean']
+                accuracy = result["accuracy_test"]["mean"]
                 if accuracy > best_accuracy:
                     best_accuracy = accuracy
                     best_model = model_name
@@ -392,13 +391,13 @@ def example_ai_friendly():
 
             ranked = sorted(
                 dataset_results.items(),
-                key=lambda x: x[1]['accuracy_test']['mean'],
+                key=lambda x: x[1]["accuracy_test"]["mean"],
                 reverse=True,
             )
 
             for i, (model_name, result) in enumerate(ranked, 1):
-                acc_stats = result['accuracy_test']
-                f1_stats = result['f1_macro_test']
+                acc_stats = result["accuracy_test"]
+                f1_stats = result["f1_macro_test"]
                 print(
                     f"  {i}. {model_name:5} - "
                     f"Acc: {acc_stats['mean']:.4f}±{acc_stats['std']:.4f}, "
@@ -440,10 +439,10 @@ def example_custom_store():
 
     print("\nRunning experiments with custom store:")
     results = runner.run(
-        datasets={'iris': (X, y)},
+        datasets={"iris": (X, y)},
         models={
-            'rf': RandomForestClassifier(random_state=42),
-            'svm': SVC(random_state=42),
+            "rf": RandomForestClassifier(random_state=42),
+            "svm": SVC(random_state=42),
         },
     )
 
@@ -482,7 +481,7 @@ def run_all_examples():
     print()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Run a specific example
     # example_minimal()
 

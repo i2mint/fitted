@@ -1,4 +1,5 @@
 """Internal utils"""
+
 from typing import Iterable, Callable, Union, Tuple
 from sklearn.base import BaseEstimator, TransformerMixin
 
