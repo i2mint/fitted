@@ -25,16 +25,49 @@ import numpy as np
 # --------------------------------------------------------------------------------------
 
 ensure_dir = partial(dol.process_path, ensure_dir_exists=True)
-
-PKG_DATA_ROOTDIR = ensure_dir(get_app_folder("fitted", folder_kind="config"))
 pjoin = lambda *paths: os.path.join(*paths)
 
-_projects_dir_from_env = os.getenv("FITTED_DFLT_EXP_PROJECTS_DIR")
-DFLT_PROJECTS_DIR = ensure_dir(
-    os.path.abspath(os.path.expanduser(_projects_dir_from_env))
-    if _projects_dir_from_env
-    else pjoin(PKG_DATA_ROOTDIR, "ml_experiments", "projects")
-)
+PROJECTS_DIR_ENVVAR = "FITTED_DFLT_EXP_PROJECTS_DIR"
+
+
+def get_pkg_data_rootdir(*, create: bool = True) -> str:
+    """The app folder of ``fitted``, created on first use rather than at import."""
+    path = get_app_folder("fitted", folder_kind="config")
+    return ensure_dir(path) if create else path
+
+
+def get_default_projects_dir(*, create: bool = True) -> str:
+    """The folder holding the projects (one sub-folder each) unless told otherwise.
+
+    It is ``$FITTED_DFLT_EXP_PROJECTS_DIR`` if that is set, otherwise a folder in
+    the app folder. Both are looked up when called, not at import, so importing
+    ``fitted.ml_experiments`` touches no disk and works with an unwritable HOME.
+    """
+    from_env = os.getenv(PROJECTS_DIR_ENVVAR)
+    if from_env:
+        path = os.path.abspath(os.path.expanduser(from_env))
+    else:
+        path = pjoin(get_pkg_data_rootdir(create=create), "ml_experiments", "projects")
+    return ensure_dir(path) if create else path
+
+
+_LAZY_MODULE_ATTRS = {
+    "PKG_DATA_ROOTDIR": get_pkg_data_rootdir,
+    "DFLT_PROJECTS_DIR": get_default_projects_dir,
+}
+
+
+def __getattr__(name):
+    # ``fitted.ml_experiments.DFLT_PROJECTS_DIR`` keeps working, but is computed on
+    # first access instead of at import.
+    if name in _LAZY_MODULE_ATTRS:
+        return _LAZY_MODULE_ATTRS[name]()
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+
+def __dir__():
+    return sorted({*globals(), *_LAZY_MODULE_ATTRS})
+
 
 dill_wrap = dol.Pipe(
     dol.wrap_kvs(value_encoder=dill.dumps, value_decoder=dill.loads),
@@ -45,16 +78,21 @@ DillFiles = dill_wrap(dol.Files)
 
 
 def uri_to_project_store(
-    name: str, *, projects_dir: str = DFLT_PROJECTS_DIR
+    name: str, *, projects_dir: str | None = None
 ) -> MutableMapping:
     """Convert a project name to a MutableMapping store.
+
+    ``projects_dir`` defaults to ``get_default_projects_dir()`` (not looked up if
+    ``name`` is an absolute path).
 
     >>> store = uri_to_project_store('my_project')  # doctest: +SKIP
     >>> isinstance(store, MutableMapping)  # doctest: +SKIP
     True
     """
+    if projects_dir is None and not os.path.isabs(name):
+        projects_dir = get_default_projects_dir(create=False)
     project_path = dol.process_path(
-        os.path.join(projects_dir, name), ensure_dir_exists=True
+        os.path.join(projects_dir or "", name), ensure_dir_exists=True
     )
     return DillFiles(project_path)
 
@@ -203,7 +241,7 @@ class ExperimentRunner:
         *,
         project_store: MutableMapping | str | None = None,
         config: ExperimentConfig | None = None,
-        project_dir=DFLT_PROJECTS_DIR,
+        project_dir: str | None = None,
     ):
         """Initialize experiment runner.
 
@@ -211,8 +249,11 @@ class ExperimentRunner:
             project_store: Storage for results (MutableMapping, project name str,
                 or None for temp directory)
             config: Experiment configuration (uses defaults if None)
+            project_dir: Folder in which a ``project_store`` given by name is kept
+                (defaults to ``get_default_projects_dir()``)
         """
         self.config = config or ExperimentConfig()
+        self._project_dir = project_dir
         self._project_store = self._init_project_store(project_store)
 
         if self.config.verbose:
@@ -234,7 +275,7 @@ class ExperimentRunner:
                 )
             return DillFiles(temp_dir)
         elif isinstance(project_store, str):
-            return uri_to_project_store(project_store)
+            return uri_to_project_store(project_store, projects_dir=self._project_dir)
         else:
             return project_store
 
@@ -322,7 +363,7 @@ class ExperimentRunner:
 
 
 def load_experiment_results(
-    project_store: MutableMapping | str,
+    project_store: MutableMapping | str, *, projects_dir: str | None = None
 ) -> MutableMapping:
     """Load experiment results from a project store.
 
@@ -331,7 +372,7 @@ def load_experiment_results(
     ['iris/rf', 'iris/svm', ...]
     """
     if isinstance(project_store, str):
-        return uri_to_project_store(project_store)
+        return uri_to_project_store(project_store, projects_dir=projects_dir)
     return project_store
 
 
