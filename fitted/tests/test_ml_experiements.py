@@ -322,14 +322,24 @@ if __name__ == '__main__':
 
 
 def test_import_does_not_create_folders_in_the_cwd(tmp_path):
-    """The default projects dir is absolute (fitted#2)."""
+    """The default projects dir is absolute, in the app folder (fitted#2)."""
     import subprocess
     import sys
 
-    code = "import fitted.ml_experiments as m, os; print(os.path.isabs(m.DFLT_PROJECTS_DIR))"
-    out = subprocess.run(
-        [sys.executable, '-c', code], cwd=tmp_path, capture_output=True, text=True,
-        env={k: v for k, v in os.environ.items() if k != 'FITTED_DFLT_EXP_PROJECTS_DIR'},
+    cwd, home = tmp_path / 'cwd', tmp_path / 'home'
+    cwd.mkdir(), home.mkdir()
+    code = (
+        "import fitted.ml_experiments as m, os; "
+        "print(m.DFLT_PROJECTS_DIR)"
     )
-    assert out.stdout.strip() == 'True', out.stderr
-    assert list(tmp_path.iterdir()) == []
+    env = {
+        k: v
+        for k, v in os.environ.items()
+        if k not in ('FITTED_DFLT_EXP_PROJECTS_DIR', 'XDG_CONFIG_HOME')
+    }
+    env['HOME'] = str(home)  # (so the app folder is a temporary one)
+    out = subprocess.run(
+        [sys.executable, '-c', code], cwd=cwd, capture_output=True, text=True, env=env
+    )
+    assert out.stdout.strip().startswith(str(home)), out.stderr
+    assert list(cwd.iterdir()) == []
