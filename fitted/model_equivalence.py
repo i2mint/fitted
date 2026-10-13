@@ -69,7 +69,7 @@ def _is_estimator_factory(estimator) -> bool:
     )
 
 
-valid_estimator_kinds = {'classifier', 'regressor', 'transformer'}
+valid_estimator_kinds = {"classifier", "regressor", "transformer"}
 
 
 def estimator_kind(estimator: Estimator) -> str:
@@ -78,13 +78,13 @@ def estimator_kind(estimator: Estimator) -> str:
         estimator = estimator()
     if isinstance(estimator, BaseEstimator):
         if is_classifier(estimator):
-            kind = 'classifier'
+            kind = "classifier"
         elif is_regressor(estimator):
-            kind = 'regressor'
+            kind = "regressor"
         elif TransformerMixin in type(estimator).mro():
-            kind = 'transformer'
+            kind = "transformer"
         else:
-            kind = 'regressor'  # we'll just use that for unsupervised?
+            kind = "regressor"  # we'll just use that for unsupervised?
     elif isinstance(estimator, str):
         kind = estimator
     else:
@@ -97,17 +97,17 @@ def get_xy_factory_for_estimator(estimator: Estimator) -> XYFactory:
 
     if isinstance(kind, str):
         data_generators = {
-            'classifier': make_classification,
-            'regressor': make_regression,
-            'transformer': make_regression,  # or classification better?
+            "classifier": make_classification,
+            "regressor": make_regression,
+            "transformer": make_regression,  # or classification better?
         }
         data_gen = data_generators.get(kind, None)
         if data_gen is None:
-            raise ValueError(f'A string estimator must be one of {data_generators}')
+            raise ValueError(f"A string estimator must be one of {data_generators}")
     elif isinstance(kind, Callable):
         data_gen = kind
     else:
-        raise ValueError(f'Unrecognized kind of estimator: {estimator}')
+        raise ValueError(f"Unrecognized kind of estimator: {estimator}")
     return data_gen
 
 
@@ -127,10 +127,13 @@ def get_model_action_and_equivalence_scorer(model_action):
         learner = model_action
         _estimator_kind = estimator_kind(learner)
         return {
-            'classifier': (lambda model, X: getattr(model, 'predict')(X), np.allclose,),
-            'regressor': (lambda model, X: getattr(model, 'predict')(X), np.allclose),
-            'transformer': (
-                lambda model, X: getattr(model, 'transform')(X),
+            "classifier": (
+                lambda model, X: getattr(model, "predict")(X),
+                np.allclose,
+            ),
+            "regressor": (lambda model, X: getattr(model, "predict")(X), np.allclose),
+            "transformer": (
+                lambda model, X: getattr(model, "transform")(X),
                 np.allclose,
             ),
         }.get(_estimator_kind)

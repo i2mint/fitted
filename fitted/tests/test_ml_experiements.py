@@ -32,7 +32,7 @@ def test_basic_experiment_run():
     X, y = make_classification(n_samples=100, n_features=20, random_state=42)
 
     # Create temporary store
-    temp_dir = create_temp_projects_dir('test_basic_')
+    temp_dir = create_temp_projects_dir("test_basic_")
 
     try:
         # Initialize runner
@@ -42,24 +42,24 @@ def test_basic_experiment_run():
 
         # Run experiments
         results = runner.run(
-            datasets={'synthetic': (X, y)},
+            datasets={"synthetic": (X, y)},
             models={
-                'rf': RandomForestClassifier(random_state=42),
-                'svm': SVC(random_state=42),
+                "rf": RandomForestClassifier(random_state=42),
+                "svm": SVC(random_state=42),
             },
         )
 
         # Verify results
-        assert 'synthetic/rf' in results
-        assert 'synthetic/svm' in results
+        assert "synthetic/rf" in results
+        assert "synthetic/svm" in results
 
         # Check result structure
-        rf_result = results['synthetic/rf']
-        assert 'accuracy_test' in rf_result
-        assert 'mean' in rf_result['accuracy_test']
-        assert 'std' in rf_result['accuracy_test']
-        assert 'timestamp' in rf_result
-        assert 'duration_seconds' in rf_result
+        rf_result = results["synthetic/rf"]
+        assert "accuracy_test" in rf_result
+        assert "mean" in rf_result["accuracy_test"]
+        assert "std" in rf_result["accuracy_test"]
+        assert "timestamp" in rf_result
+        assert "duration_seconds" in rf_result
 
         print("✅ Basic experiment run test passed")
 
@@ -77,7 +77,7 @@ def test_multiple_datasets():
     X1, y1 = make_classification(n_samples=100, n_features=10, random_state=1)
     X2, y2 = make_classification(n_samples=150, n_features=15, random_state=2)
 
-    temp_dir = create_temp_projects_dir('test_multi_datasets_')
+    temp_dir = create_temp_projects_dir("test_multi_datasets_")
 
     try:
         runner = ExperimentRunner(
@@ -86,15 +86,15 @@ def test_multiple_datasets():
 
         results = runner.run(
             datasets={
-                'dataset1': (X1, y1),
-                'dataset2': (X2, y2),
+                "dataset1": (X1, y1),
+                "dataset2": (X2, y2),
             },
-            models={'rf': RandomForestClassifier(random_state=42)},
+            models={"rf": RandomForestClassifier(random_state=42)},
         )
 
         # Verify all combinations exist
-        assert 'dataset1/rf' in results
-        assert 'dataset2/rf' in results
+        assert "dataset1/rf" in results
+        assert "dataset2/rf" in results
 
         print("✅ Multiple datasets test passed")
 
@@ -110,30 +110,30 @@ def test_multiple_scoring_metrics():
 
     X, y = make_classification(n_samples=100, n_features=20, random_state=42)
 
-    temp_dir = create_temp_projects_dir('test_multi_metrics_')
+    temp_dir = create_temp_projects_dir("test_multi_metrics_")
 
     try:
         runner = ExperimentRunner(
             project_store=temp_dir,
             config=ExperimentConfig(
                 n_splits=3,
-                scoring=['accuracy', 'f1', 'precision', 'recall'],
+                scoring=["accuracy", "f1", "precision", "recall"],
                 verbose=False,
             ),
         )
 
         results = runner.run(
-            datasets={'data': (X, y)},
-            models={'lr': LogisticRegression(random_state=42)},
+            datasets={"data": (X, y)},
+            models={"lr": LogisticRegression(random_state=42)},
         )
 
-        result = results['data/lr']
+        result = results["data/lr"]
 
         # Verify all metrics are present
-        assert 'accuracy_test' in result
-        assert 'f1_test' in result
-        assert 'precision_test' in result
-        assert 'recall_test' in result
+        assert "accuracy_test" in result
+        assert "f1_test" in result
+        assert "precision_test" in result
+        assert "recall_test" in result
 
         print("✅ Multiple scoring metrics test passed")
 
@@ -149,7 +149,7 @@ def test_config_overrides():
 
     X, y = make_classification(n_samples=100, n_features=20, random_state=42)
 
-    temp_dir = create_temp_projects_dir('test_config_overrides_')
+    temp_dir = create_temp_projects_dir("test_config_overrides_")
 
     try:
         # Default config with 5 splits
@@ -159,15 +159,15 @@ def test_config_overrides():
 
         # Override to 2 splits for this run
         results = runner.run(
-            datasets={'data': (X, y)},
-            models={'rf': RandomForestClassifier(random_state=42)},
+            datasets={"data": (X, y)},
+            models={"rf": RandomForestClassifier(random_state=42)},
             n_splits=2,
         )
 
-        result = results['data/rf']
+        result = results["data/rf"]
 
         # Check that 2 splits were used (2 scores in raw results)
-        assert len(result['cv_results_raw']['test_accuracy']) == 2
+        assert len(result["cv_results_raw"]["test_accuracy"]) == 2
 
         print("✅ Config overrides test passed")
 
@@ -183,7 +183,7 @@ def test_iterable_inputs():
 
     X, y = make_classification(n_samples=100, n_features=20, random_state=42)
 
-    temp_dir = create_temp_projects_dir('test_iterable_inputs_')
+    temp_dir = create_temp_projects_dir("test_iterable_inputs_")
 
     try:
         runner = ExperimentRunner(
@@ -192,11 +192,11 @@ def test_iterable_inputs():
 
         # Use lists of tuples instead of dicts
         results = runner.run(
-            datasets=[('data1', (X, y))],
-            models=[('model1', RandomForestClassifier(random_state=42))],
+            datasets=[("data1", (X, y))],
+            models=[("model1", RandomForestClassifier(random_state=42))],
         )
 
-        assert 'data1/model1' in results
+        assert "data1/model1" in results
 
         print("✅ Iterable inputs test passed")
 
@@ -213,8 +213,8 @@ def test_string_project_store():
     X, y = make_classification(n_samples=50, n_features=10, random_state=42)
 
     # Create temp directory and use unique project name within it
-    temp_base_dir = create_temp_projects_dir('test_string_store_base_')
-    project_name = f'test_project_{np.random.randint(10000)}'
+    temp_base_dir = create_temp_projects_dir("test_string_store_base_")
+    project_name = f"test_project_{np.random.randint(10000)}"
 
     try:
         # Use temp_uri_to_project_store to create project in temp location
@@ -228,17 +228,17 @@ def test_string_project_store():
         )
 
         results = runner.run(
-            datasets={'data': (X, y)},
-            models={'rf': RandomForestClassifier(random_state=42)},
+            datasets={"data": (X, y)},
+            models={"rf": RandomForestClassifier(random_state=42)},
         )
 
-        assert 'data/rf' in results
+        assert "data/rf" in results
 
         # Load results using the same temp location
         loaded_results = temp_uri_to_project_store(
             project_name, temp_projects_dir=temp_base_dir
         )
-        assert 'data/rf' in loaded_results
+        assert "data/rf" in loaded_results
 
         print("✅ String project store test passed")
 
@@ -254,7 +254,7 @@ def test_summarize_results():
 
     X, y = make_classification(n_samples=100, n_features=20, random_state=42)
 
-    temp_dir = create_temp_projects_dir('test_summarize_results_')
+    temp_dir = create_temp_projects_dir("test_summarize_results_")
 
     try:
         runner = ExperimentRunner(
@@ -262,16 +262,16 @@ def test_summarize_results():
         )
 
         results = runner.run(
-            datasets={'data': (X, y)},
+            datasets={"data": (X, y)},
             models={
-                'rf': RandomForestClassifier(random_state=42),
-                'svm': SVC(random_state=42),
-                'lr': LogisticRegression(random_state=42),
+                "rf": RandomForestClassifier(random_state=42),
+                "svm": SVC(random_state=42),
+                "lr": LogisticRegression(random_state=42),
             },
         )
 
         # Get summary sorted by mean accuracy
-        summary = list(summarize_results(results, metric='accuracy', sort_by='mean'))
+        summary = list(summarize_results(results, metric="accuracy", sort_by="mean"))
 
         # Should have 3 results
         assert len(summary) == 3
@@ -279,13 +279,13 @@ def test_summarize_results():
         # Each summary should have key and stats
         for key, stats in summary:
             assert isinstance(key, str)
-            assert 'mean' in stats
-            assert 'std' in stats
-            assert 'min' in stats
-            assert 'max' in stats
+            assert "mean" in stats
+            assert "std" in stats
+            assert "min" in stats
+            assert "max" in stats
 
         # Verify sorting (means should be in descending order)
-        means = [stats['mean'] for _, stats in summary]
+        means = [stats["mean"] for _, stats in summary]
         assert means == sorted(means, reverse=True)
 
         print("✅ Summarize results test passed")
@@ -317,7 +317,7 @@ def run_all_tests():
     print()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_all_tests()
 
 
