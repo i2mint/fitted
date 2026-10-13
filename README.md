@@ -69,11 +69,11 @@ runner = ExperimentRunner(
 To see what your default `projects` directory is, see 
 
 ```py
-from fitted.ml_experiements import DFLT_PROJECTS_DIR
+from fitted.ml_experiments import DFLT_PROJECTS_DIR
 print(DFLT_PROJECTS_DIR)
 ```
 
-You can change this default by specifying a different one in the `FITTED_DFLT_EXP_PROJECTS_DIR` environment variable.
+It lives in fitted's app folder (not in the current directory). You can change this default by specifying a different one in the `FITTED_DFLT_EXP_PROJECTS_DIR` environment variable (use an absolute path; a relative one is resolved against the current directory).
 
 
 ### ExperimentConfig

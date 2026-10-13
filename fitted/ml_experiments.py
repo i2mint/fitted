@@ -29,8 +29,11 @@ ensure_dir = partial(dol.process_path, ensure_dir_exists=True)
 PKG_DATA_ROOTDIR = ensure_dir(get_app_folder("fitted", folder_kind="config"))
 pjoin = lambda *paths: os.path.join(*paths)
 
+_projects_dir_from_env = os.getenv("FITTED_DFLT_EXP_PROJECTS_DIR")
 DFLT_PROJECTS_DIR = ensure_dir(
-    os.getenv("FITTED_DFLT_EXP_PROJECTS_DIR") or pjoin("ml_experiments", "projects")
+    os.path.abspath(os.path.expanduser(_projects_dir_from_env))
+    if _projects_dir_from_env
+    else pjoin(PKG_DATA_ROOTDIR, "ml_experiments", "projects")
 )
 
 dill_wrap = dol.Pipe(
