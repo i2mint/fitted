@@ -31,7 +31,8 @@ PKG_DATA_ROOTDIR = ensure_dir(get_app_folder('fitted', folder_kind='config'))
 pjoin = lambda *paths: os.path.join(*paths)
 
 DFLT_PROJECTS_DIR = ensure_dir(
-    os.getenv('FITTED_DFLT_EXP_PROJECTS_DIR') or pjoin('ml_experiments', 'projects')
+    os.getenv('FITTED_DFLT_EXP_PROJECTS_DIR')
+    or pjoin(PKG_DATA_ROOTDIR, 'ml_experiments', 'projects')
 )
 
 dill_wrap = dol.Pipe(

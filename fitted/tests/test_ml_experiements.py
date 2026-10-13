@@ -1,5 +1,6 @@
 """Tests for ml_experiments module."""
 
+import os
 import tempfile
 import shutil
 from pathlib import Path
@@ -318,3 +319,17 @@ def run_all_tests():
 
 if __name__ == '__main__':
     run_all_tests()
+
+
+def test_import_does_not_create_folders_in_the_cwd(tmp_path):
+    """The default projects dir is absolute (fitted#2)."""
+    import subprocess
+    import sys
+
+    code = "import fitted.ml_experiments as m, os; print(os.path.isabs(m.DFLT_PROJECTS_DIR))"
+    out = subprocess.run(
+        [sys.executable, '-c', code], cwd=tmp_path, capture_output=True, text=True,
+        env={k: v for k, v in os.environ.items() if k != 'FITTED_DFLT_EXP_PROJECTS_DIR'},
+    )
+    assert out.stdout.strip() == 'True', out.stderr
+    assert list(tmp_path.iterdir()) == []

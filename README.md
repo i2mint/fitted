@@ -73,7 +73,7 @@ from fitted.ml_experiements import DFLT_PROJECTS_DIR
 print(DFLT_PROJECTS_DIR)
 ```
 
-You can change this default by specifying a different one in the `FITTED_DFLT_EXP_PROJECTS_DIR` environment variable.
+It lives in fitted's app folder (not in the current directory). You can change this default by specifying a different one in the `FITTED_DFLT_EXP_PROJECTS_DIR` environment variable.
 
 
 ### ExperimentConfig
