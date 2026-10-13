@@ -30,9 +30,10 @@ pjoin = lambda *paths: os.path.join(*paths)
 PROJECTS_DIR_ENVVAR = "FITTED_DFLT_EXP_PROJECTS_DIR"
 
 
-def get_pkg_data_rootdir() -> str:
+def get_pkg_data_rootdir(*, create: bool = True) -> str:
     """The app folder of ``fitted``, created on first use rather than at import."""
-    return ensure_dir(get_app_folder("fitted", folder_kind="config"))
+    path = get_app_folder("fitted", folder_kind="config")
+    return ensure_dir(path) if create else path
 
 
 def get_default_projects_dir(*, create: bool = True) -> str:
@@ -46,7 +47,7 @@ def get_default_projects_dir(*, create: bool = True) -> str:
     if from_env:
         path = os.path.abspath(os.path.expanduser(from_env))
     else:
-        path = pjoin(get_pkg_data_rootdir(), "ml_experiments", "projects")
+        path = pjoin(get_pkg_data_rootdir(create=create), "ml_experiments", "projects")
     return ensure_dir(path) if create else path
 
 
@@ -62,6 +63,10 @@ def __getattr__(name):
     if name in _LAZY_MODULE_ATTRS:
         return _LAZY_MODULE_ATTRS[name]()
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+
+def __dir__():
+    return sorted({*globals(), *_LAZY_MODULE_ATTRS})
 
 
 dill_wrap = dol.Pipe(
@@ -84,7 +89,7 @@ def uri_to_project_store(
     >>> isinstance(store, MutableMapping)  # doctest: +SKIP
     True
     """
-    if projects_dir is None and not os.path.isabs(os.path.expanduser(name)):
+    if projects_dir is None and not os.path.isabs(name):
         projects_dir = get_default_projects_dir(create=False)
     project_path = dol.process_path(
         os.path.join(projects_dir or "", name), ensure_dir_exists=True

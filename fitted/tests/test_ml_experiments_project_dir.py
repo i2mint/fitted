@@ -54,3 +54,17 @@ def test_import_survives_an_unwritable_home(tmp_path):
         cwd=str(tmp_path),
     )
     assert out.returncode == 0, out.stderr[-500:]
+
+
+def test_lazy_module_attributes_and_no_side_effects_for_create_false(
+    tmp_path, monkeypatch
+):
+    import fitted.ml_experiments as m
+
+    monkeypatch.setenv("HOME", str(tmp_path))
+    monkeypatch.delenv("XDG_CONFIG_HOME", raising=False)
+    monkeypatch.delenv("FITTED_DFLT_EXP_PROJECTS_DIR", raising=False)
+    path = m.get_default_projects_dir(create=False)
+    assert path.startswith(str(tmp_path)) and list(tmp_path.iterdir()) == []
+    assert "DFLT_PROJECTS_DIR" in dir(m)
+    assert m.DFLT_PROJECTS_DIR == path and os.path.isdir(path)  # access creates it

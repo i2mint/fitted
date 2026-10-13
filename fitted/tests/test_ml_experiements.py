@@ -328,7 +328,7 @@ def test_import_does_not_create_folders_in_the_cwd(tmp_path):
 
     cwd, home = tmp_path / "cwd", tmp_path / "home"
     cwd.mkdir(), home.mkdir()
-    code = "import fitted.ml_experiments as m, os; " "print(m.DFLT_PROJECTS_DIR)"
+    code = "import fitted.ml_experiments as m, os; print(m.DFLT_PROJECTS_DIR)"
     env = {
         k: v
         for k, v in os.environ.items()
