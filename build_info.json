@@ -1,38 +1,38 @@
 {
   "schema_version": 1,
-  "built_at": "2026-10-13T14:17:44Z",
+  "built_at": "2026-10-13T15:28:56Z",
   "package": {
     "name": "fitted",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "display_name": "fitted",
     "source": "setup.cfg"
   },
   "git": {
     "available": true,
-    "commit": "1846f577f56134981f847846dfafb01f920e2a91",
-    "short_commit": "1846f57",
+    "commit": "88eb0a161fa8a935f740e090fad0a124d52932ca",
+    "short_commit": "88eb0a1",
     "branch": "master",
     "tags": [
-      "0.1.5"
+      "0.1.6"
     ],
     "dirty": false,
     "remote_url": "https://github.com/i2mint/fitted",
-    "commit_url": "https://github.com/i2mint/fitted/commit/1846f577f56134981f847846dfafb01f920e2a91",
+    "commit_url": "https://github.com/i2mint/fitted/commit/88eb0a161fa8a935f740e090fad0a124d52932ca",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "i2mint/fitted",
-    "sha": "85d0c138917e6ceb6ca065405a6ed4e171041103",
+    "sha": "d3a18e39f26274b5f747b2cdfde09d98dfe83240",
     "sha_in_history": true,
     "ref": "refs/heads/master",
     "ref_name": "master",
-    "run_id": "38411822678",
-    "run_url": "https://github.com/i2mint/fitted/actions/runs/38411822678",
+    "run_id": "38422148800",
+    "run_url": "https://github.com/i2mint/fitted/actions/runs/38422148800",
     "server_url": "https://github.com"
   },
   "tools": {
-    "epythet": "0.2.15",
+    "epythet": "0.2.16",
     "sphinx": "9.1.0",
     "docutils": "0.22.4",
     "python": "3.12.15"
@@ -57,18 +57,20 @@
   },
   "site": {
     "modules_documented": 5,
-    "objects_documented": 15
+    "objects_documented": 17
   },
   "pypi": {
     "checked": true,
     "latest": "0.1.5",
-    "relation": "same",
+    "relation": "ahead",
     "error": null
   },
-  "reproduce": "git clone https://github.com/i2mint/fitted && cd fitted\ngit checkout 1846f577f56134981f847846dfafb01f920e2a91\npip install \"epythet==0.2.15\"\nepythet quickstart . --ignore tests/ scrap/",
+  "reproduce": "git clone https://github.com/i2mint/fitted && cd fitted\ngit checkout 88eb0a161fa8a935f740e090fad0a124d52932ca\npip install \"epythet==0.2.16\"\nepythet quickstart . --ignore tests/ scrap/",
   "warnings": [],
   "alignment": {
-    "aligned": true,
-    "notes": []
+    "aligned": false,
+    "notes": [
+      "The documented version (0.1.6) is ahead of the latest release on PyPI (0.1.5): these docs describe unreleased code."
+    ]
   }
 }

@@ -7,14 +7,16 @@ across multiple datasets and models, with results persistence.
 
 ### Functions
 
-| [`cleanup_temp_dir`](#fitted.ml_experiments.cleanup_temp_dir)(temp_dir, \*[, verbose])         | Clean up a temporary directory and print status.            |
-|----------------------------------------------------------------------------------------------------|-------------------------------------------------------------|
-| [`create_temp_projects_dir`](#fitted.ml_experiments.create_temp_projects_dir)([prefix])                | Create a persistent temporary directory for examples/tests. |
-| [`load_experiment_results`](#fitted.ml_experiments.load_experiment_results)(project_store)            | Load experiment results from a project store.               |
-| `pjoin`(\*paths)                                                                                   |                                                             |
-| [`summarize_results`](#fitted.ml_experiments.summarize_results)(results, \*[, metric, sort_by]) | Generate summary statistics sorted by performance.          |
-| [`temp_uri_to_project_store`](#fitted.ml_experiments.temp_uri_to_project_store)(name, \*[, ...])        | Create a project store in a temporary directory.            |
-| [`uri_to_project_store`](#fitted.ml_experiments.uri_to_project_store)(name, \*[, projects_dir])    | Convert a project name to a MutableMapping store.           |
+| [`cleanup_temp_dir`](#fitted.ml_experiments.cleanup_temp_dir)(temp_dir, \*[, verbose])         | Clean up a temporary directory and print status.                             |
+|----------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
+| [`create_temp_projects_dir`](#fitted.ml_experiments.create_temp_projects_dir)([prefix])                | Create a persistent temporary directory for examples/tests.                  |
+| [`get_default_projects_dir`](#fitted.ml_experiments.get_default_projects_dir)(\*[, create])            | The folder holding the projects (one sub-folder each) unless told otherwise. |
+| [`get_pkg_data_rootdir`](#fitted.ml_experiments.get_pkg_data_rootdir)(\*[, create])                | The app folder of `fitted`, created on first use rather than at import.      |
+| [`load_experiment_results`](#fitted.ml_experiments.load_experiment_results)(project_store, \*[, ...]) | Load experiment results from a project store.                                |
+| `pjoin`(\*paths)                                                                                   |                                                                              |
+| [`summarize_results`](#fitted.ml_experiments.summarize_results)(results, \*[, metric, sort_by]) | Generate summary statistics sorted by performance.                           |
+| [`temp_uri_to_project_store`](#fitted.ml_experiments.temp_uri_to_project_store)(name, \*[, ...])        | Create a project store in a temporary directory.                             |
+| [`uri_to_project_store`](#fitted.ml_experiments.uri_to_project_store)(name, \*[, projects_dir])    | Convert a project name to a MutableMapping store.                            |
 
 ### Classes
 
@@ -34,7 +36,7 @@ Configuration for experiment runs.
 3
 ```
 
-### *class* fitted.ml_experiments.ExperimentRunner(, project_store=None, config=None, project_dir='/home/runner/.config/fitted/ml_experiments/projects')
+### *class* fitted.ml_experiments.ExperimentRunner(, project_store=None, config=None, project_dir=None)
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -105,7 +107,25 @@ making it suitable for tests and examples that need to demonstrate persistence.
 >>> print(f"Using temporary directory: {temp_dir}")
 ```
 
-### fitted.ml_experiments.load_experiment_results(project_store)
+### fitted.ml_experiments.get_default_projects_dir(, create=True)
+
+The folder holding the projects (one sub-folder each) unless told otherwise.
+
+It is `$FITTED_DFLT_EXP_PROJECTS_DIR` if that is set, otherwise a folder in
+the app folder. Both are looked up when called, not at import, so importing
+`fitted.ml_experiments` touches no disk and works with an unwritable HOME.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### fitted.ml_experiments.get_pkg_data_rootdir(, create=True)
+
+The app folder of `fitted`, created on first use rather than at import.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### fitted.ml_experiments.load_experiment_results(project_store, , projects_dir=None)
 
 Load experiment results from a project store.
 
@@ -147,9 +167,12 @@ temp directory creation with project store setup.
 * **Returns:**
   MutableMapping project store in temporary location
 
-### fitted.ml_experiments.uri_to_project_store(name, , projects_dir='/home/runner/.config/fitted/ml_experiments/projects')
+### fitted.ml_experiments.uri_to_project_store(name, , projects_dir=None)
 
 Convert a project name to a MutableMapping store.
+
+`projects_dir` defaults to `get_default_projects_dir()` (not looked up if
+`name` is an absolute path).
 
 * **Return type:**
   [`MutableMapping`](https://docs.python.org/3/library/typing.html#typing.MutableMapping)

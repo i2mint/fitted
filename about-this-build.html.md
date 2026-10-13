@@ -2,18 +2,20 @@
 
 # About this build
 
-This documentation was built on **2026-10-13 14:17 UTC** from commit <a href="https://github.com/i2mint/fitted/commit/1846f577f56134981f847846dfafb01f920e2a91"><code>1846f57</code></a> on branch <code>master</code>, for **fitted 0.1.5** (from <code>setup.cfg</code>).
+This documentation was built on **2026-10-13 15:28 UTC** from commit <a href="https://github.com/i2mint/fitted/commit/88eb0a161fa8a935f740e090fad0a124d52932ca"><code>88eb0a1</code></a> on branch <code>master</code>, for **fitted 0.1.6** (from <code>setup.cfg</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (0.1.6) is ahead of the latest release on PyPI (0.1.5): these docs describe unreleased code.
 
 ## Source
 
 |                     |                                                                                                                                                      |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/fitted/commit/1846f577f56134981f847846dfafb01f920e2a91"><code>1846f577f56134981f847846dfafb01f920e2a91</code></a> |
+| Commit              | <a href="https://github.com/i2mint/fitted/commit/88eb0a161fa8a935f740e090fad0a124d52932ca"><code>88eb0a161fa8a935f740e090fad0a124d52932ca</code></a> |
 | Branch              | <code>master</code>                                                                                                                                  |
-| Tags at this commit | <code>0.1.5</code>                                                                                                                                   |
+| Tags at this commit | <code>0.1.6</code>                                                                                                                                   |
 | Working tree        | clean                                                                                                                                                |
 | Remote              | <code>https://github.com/i2mint/fitted</code>                                                                                                        |
 
@@ -22,15 +24,15 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/fitted</code>                                                                 |
-| Run          | <a href="https://github.com/i2mint/fitted/actions/runs/38411822678">38411822678</a>        |
+| Run          | <a href="https://github.com/i2mint/fitted/actions/runs/38422148800">38422148800</a>        |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>85d0c138917e6ceb6ca065405a6ed4e171041103</code> (in the history of the built commit) |
+| Event commit | <code>d3a18e39f26274b5f747b2cdfde09d98dfe83240</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.15  |
+| epythet  | 0.2.16  |
 | Sphinx   | 9.1.0   |
 | docutils | 0.22.4  |
 | Python   | 3.12.15 |
@@ -49,14 +51,14 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/fitted/0.1.5/">0.1.5</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/fitted/0.1.5/">0.1.5</a>, older than the documented version (0.1.6).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/fitted && cd fitted
-git checkout 1846f577f56134981f847846dfafb01f920e2a91
-pip install "epythet==0.2.15"
+git checkout 88eb0a161fa8a935f740e090fad0a124d52932ca
+pip install "epythet==0.2.16"
 epythet quickstart . --ignore tests/ scrap/
 ```
 

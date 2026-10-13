@@ -10,6 +10,8 @@ fitted.ml\_experiments
    
       cleanup_temp_dir
       create_temp_projects_dir
+      get_default_projects_dir
+      get_pkg_data_rootdir
       load_experiment_results
       pjoin
       summarize_results

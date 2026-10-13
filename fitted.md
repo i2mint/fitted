@@ -1,4 +1,4 @@
-> built 2026-10-13 14:17 UTC from 1846f57 (master) · fitted 0.1.5. Details: build_info.json
+> built 2026-10-13 15:28 UTC from 88eb0a1 (master) · fitted 0.1.6. Details: build_info.json
 
 # index.html.md
 
@@ -330,14 +330,16 @@ across multiple datasets and models, with results persistence.
 
 ### Functions
 
-| [`cleanup_temp_dir`](_autosummary/fitted.ml_experiments.html.md#fitted.ml_experiments.cleanup_temp_dir)(temp_dir, \*[, verbose])         | Clean up a temporary directory and print status.            |
-|----------------------------------------------------------------------------------------------------|-------------------------------------------------------------|
-| [`create_temp_projects_dir`](_autosummary/fitted.ml_experiments.html.md#fitted.ml_experiments.create_temp_projects_dir)([prefix])                | Create a persistent temporary directory for examples/tests. |
-| [`load_experiment_results`](_autosummary/fitted.ml_experiments.html.md#fitted.ml_experiments.load_experiment_results)(project_store)            | Load experiment results from a project store.               |
-| `pjoin`(\*paths)                                                                                   |                                                             |
-| [`summarize_results`](_autosummary/fitted.ml_experiments.html.md#fitted.ml_experiments.summarize_results)(results, \*[, metric, sort_by]) | Generate summary statistics sorted by performance.          |
-| [`temp_uri_to_project_store`](_autosummary/fitted.ml_experiments.html.md#fitted.ml_experiments.temp_uri_to_project_store)(name, \*[, ...])        | Create a project store in a temporary directory.            |
-| [`uri_to_project_store`](_autosummary/fitted.ml_experiments.html.md#fitted.ml_experiments.uri_to_project_store)(name, \*[, projects_dir])    | Convert a project name to a MutableMapping store.           |
+| [`cleanup_temp_dir`](_autosummary/fitted.ml_experiments.html.md#fitted.ml_experiments.cleanup_temp_dir)(temp_dir, \*[, verbose])         | Clean up a temporary directory and print status.                             |
+|----------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------|
+| [`create_temp_projects_dir`](_autosummary/fitted.ml_experiments.html.md#fitted.ml_experiments.create_temp_projects_dir)([prefix])                | Create a persistent temporary directory for examples/tests.                  |
+| [`get_default_projects_dir`](_autosummary/fitted.ml_experiments.html.md#fitted.ml_experiments.get_default_projects_dir)(\*[, create])            | The folder holding the projects (one sub-folder each) unless told otherwise. |
+| [`get_pkg_data_rootdir`](_autosummary/fitted.ml_experiments.html.md#fitted.ml_experiments.get_pkg_data_rootdir)(\*[, create])                | The app folder of `fitted`, created on first use rather than at import.      |
+| [`load_experiment_results`](_autosummary/fitted.ml_experiments.html.md#fitted.ml_experiments.load_experiment_results)(project_store, \*[, ...]) | Load experiment results from a project store.                                |
+| `pjoin`(\*paths)                                                                                   |                                                                              |
+| [`summarize_results`](_autosummary/fitted.ml_experiments.html.md#fitted.ml_experiments.summarize_results)(results, \*[, metric, sort_by]) | Generate summary statistics sorted by performance.                           |
+| [`temp_uri_to_project_store`](_autosummary/fitted.ml_experiments.html.md#fitted.ml_experiments.temp_uri_to_project_store)(name, \*[, ...])        | Create a project store in a temporary directory.                             |
+| [`uri_to_project_store`](_autosummary/fitted.ml_experiments.html.md#fitted.ml_experiments.uri_to_project_store)(name, \*[, projects_dir])    | Convert a project name to a MutableMapping store.                            |
 
 ### Classes
 
@@ -357,7 +359,7 @@ Configuration for experiment runs.
 3
 ```
 
-### *class* fitted.ml_experiments.ExperimentRunner(, project_store=None, config=None, project_dir='/home/runner/.config/fitted/ml_experiments/projects')
+### *class* fitted.ml_experiments.ExperimentRunner(, project_store=None, config=None, project_dir=None)
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -428,7 +430,25 @@ making it suitable for tests and examples that need to demonstrate persistence.
 >>> print(f"Using temporary directory: {temp_dir}")
 ```
 
-### fitted.ml_experiments.load_experiment_results(project_store)
+### fitted.ml_experiments.get_default_projects_dir(, create=True)
+
+The folder holding the projects (one sub-folder each) unless told otherwise.
+
+It is `$FITTED_DFLT_EXP_PROJECTS_DIR` if that is set, otherwise a folder in
+the app folder. Both are looked up when called, not at import, so importing
+`fitted.ml_experiments` touches no disk and works with an unwritable HOME.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### fitted.ml_experiments.get_pkg_data_rootdir(, create=True)
+
+The app folder of `fitted`, created on first use rather than at import.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### fitted.ml_experiments.load_experiment_results(project_store, , projects_dir=None)
 
 Load experiment results from a project store.
 
@@ -470,9 +490,12 @@ temp directory creation with project store setup.
 * **Returns:**
   MutableMapping project store in temporary location
 
-### fitted.ml_experiments.uri_to_project_store(name, , projects_dir='/home/runner/.config/fitted/ml_experiments/projects')
+### fitted.ml_experiments.uri_to_project_store(name, , projects_dir=None)
 
 Convert a project name to a MutableMapping store.
+
+`projects_dir` defaults to `get_default_projects_dir()` (not looked up if
+`name` is an absolute path).
 
 * **Return type:**
   [`MutableMapping`](https://docs.python.org/3/library/typing.html#typing.MutableMapping)
@@ -631,18 +654,20 @@ Internal utils
 
 # About this build
 
-This documentation was built on **2026-10-13 14:17 UTC** from commit <a href="https://github.com/i2mint/fitted/commit/1846f577f56134981f847846dfafb01f920e2a91"><code>1846f57</code></a> on branch <code>master</code>, for **fitted 0.1.5** (from <code>setup.cfg</code>).
+This documentation was built on **2026-10-13 15:28 UTC** from commit <a href="https://github.com/i2mint/fitted/commit/88eb0a161fa8a935f740e090fad0a124d52932ca"><code>88eb0a1</code></a> on branch <code>master</code>, for **fitted 0.1.6** (from <code>setup.cfg</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (0.1.6) is ahead of the latest release on PyPI (0.1.5): these docs describe unreleased code.
 
 ## Source
 
 |                     |                                                                                                                                                      |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/i2mint/fitted/commit/1846f577f56134981f847846dfafb01f920e2a91"><code>1846f577f56134981f847846dfafb01f920e2a91</code></a> |
+| Commit              | <a href="https://github.com/i2mint/fitted/commit/88eb0a161fa8a935f740e090fad0a124d52932ca"><code>88eb0a161fa8a935f740e090fad0a124d52932ca</code></a> |
 | Branch              | <code>master</code>                                                                                                                                  |
-| Tags at this commit | <code>0.1.5</code>                                                                                                                                   |
+| Tags at this commit | <code>0.1.6</code>                                                                                                                                   |
 | Working tree        | clean                                                                                                                                                |
 | Remote              | <code>https://github.com/i2mint/fitted</code>                                                                                                        |
 
@@ -651,15 +676,15 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>i2mint/fitted</code>                                                                 |
-| Run          | <a href="https://github.com/i2mint/fitted/actions/runs/38411822678">38411822678</a>        |
+| Run          | <a href="https://github.com/i2mint/fitted/actions/runs/38422148800">38422148800</a>        |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>85d0c138917e6ceb6ca065405a6ed4e171041103</code> (in the history of the built commit) |
+| Event commit | <code>d3a18e39f26274b5f747b2cdfde09d98dfe83240</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.15  |
+| epythet  | 0.2.16  |
 | Sphinx   | 9.1.0   |
 | docutils | 0.22.4  |
 | Python   | 3.12.15 |
@@ -678,14 +703,14 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/fitted/0.1.5/">0.1.5</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/fitted/0.1.5/">0.1.5</a>, older than the documented version (0.1.6).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/i2mint/fitted && cd fitted
-git checkout 1846f577f56134981f847846dfafb01f920e2a91
-pip install "epythet==0.2.15"
+git checkout 88eb0a161fa8a935f740e090fad0a124d52932ca
+pip install "epythet==0.2.16"
 epythet quickstart . --ignore tests/ scrap/
 ```
 
