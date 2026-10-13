@@ -338,6 +338,10 @@ def test_import_does_not_create_folders_in_the_cwd(tmp_path):
         if k not in ('FITTED_DFLT_EXP_PROJECTS_DIR', 'XDG_CONFIG_HOME')
     }
     env['HOME'] = str(home)  # (so the app folder is a temporary one)
+    # (the package may be run from source, not installed)
+    import fitted
+
+    env['PYTHONPATH'] = str(Path(fitted.__file__).parent.parent)
     out = subprocess.run(
         [sys.executable, '-c', code], cwd=cwd, capture_output=True, text=True, env=env
     )
